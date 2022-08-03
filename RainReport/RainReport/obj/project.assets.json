@@ -45,24 +45,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Michael\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\zxmmi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Michael\\RiderProjects\\RainReport\\Rain-Report\\RainReport\\RainReport\\RainReport.csproj",
+      "projectUniqueName": "C:\\Users\\zxmmi\\Documents\\GitHub\\Rain-Report\\RainReport\\RainReport\\RainReport.csproj",
       "projectName": "RainReport",
-      "projectPath": "C:\\Users\\Michael\\RiderProjects\\RainReport\\Rain-Report\\RainReport\\RainReport\\RainReport.csproj",
-      "packagesPath": "C:\\Users\\Michael\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Michael\\RiderProjects\\RainReport\\Rain-Report\\RainReport\\RainReport\\obj\\",
+      "projectPath": "C:\\Users\\zxmmi\\Documents\\GitHub\\Rain-Report\\RainReport\\RainReport\\RainReport.csproj",
+      "packagesPath": "C:\\Users\\zxmmi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\zxmmi\\Documents\\GitHub\\Rain-Report\\RainReport\\RainReport\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Michael\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\zxmmi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -111,7 +106,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

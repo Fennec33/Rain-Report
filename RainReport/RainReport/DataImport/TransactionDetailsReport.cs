@@ -16,9 +16,9 @@ namespace RainReport.DataImport
 
         public void ReadFile(string filePath)
         {
-            using (var streamREader = new StreamReader(filePath))
+            using (var streamReader = new StreamReader(filePath))
             {
-                using (var csvReader = new CsvReader(streamREader, CultureInfo.InvariantCulture))
+                using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
                 {
                     _records = csvReader.GetRecords<TransactionDetailsReportRow>().ToList();
                 }
