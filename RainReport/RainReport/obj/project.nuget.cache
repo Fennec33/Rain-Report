@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "YE/DQHa7zeKBm1kPUU5AS5bbzQCy6fld8Rj+v++CIGKw8BF3VS63TbZqgG4NA6vXalnwGPV2iNujxOLamfVVlg==",
+  "dgSpecHash": "q9rUbagzl0vrGrGLAdwJ3uaUww5NiVDRI4lhZPlFGXfqOFvS+2Ce38qGS6/v573xcxaec9+OVX/F4xE/isZQIA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Michael\\RiderProjects\\RainReport\\Rain-Report\\RainReport\\RainReport\\RainReport.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Michael\\.nuget\\packages\\csvhelper\\28.0.1\\csvhelper.28.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
