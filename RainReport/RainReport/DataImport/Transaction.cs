@@ -9,8 +9,10 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RainReport.DataImport
 {
-    public class EndOfDayReportRow
+    public class Transaction
     {
+        public List<TransactionItem> items;
+
         [Name("Transaction ID")]
         public int TransactionID { get; set; }
 
@@ -43,5 +45,13 @@ namespace RainReport.DataImport
 
         [Name("Total")]
         public float Total { get; set; }
+
+        public bool ifMajorItemTransaction;
+        public bool ifNonCommisionableTransaction;
+
+        public void DoAThing()
+        {
+            //TODO
+        }
     }
 }

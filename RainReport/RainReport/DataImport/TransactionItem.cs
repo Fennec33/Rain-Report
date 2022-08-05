@@ -9,7 +9,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RainReport.DataImport
 {
-    public class TransactionDetailsReportRow
+    public class TransactionItem
     {
         [Name("id")]
         public int ID { get; set; }
@@ -88,5 +88,9 @@ namespace RainReport.DataImport
 
         [Name("Note")]
         public string Note { get; set; }
+
+        public float salesTotal;
+        public bool isCommisonable;
+        public bool isMajorItem;
     }
 }

@@ -11,8 +11,8 @@ namespace RainReport.DataImport
 {
     public class EndOfDayReport
     {
-        private List<EndOfDayReportRow> _records;
-        public IReadOnlyCollection<EndOfDayReportRow> Records => _records.AsReadOnly();
+        private List<Transaction> _records;
+        public IReadOnlyCollection<Transaction> Records => _records.AsReadOnly();
 
         public void ReadFile(string filePath)
         {
@@ -20,12 +20,12 @@ namespace RainReport.DataImport
             {
                 using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
                 {
-                    _records = csvReader.GetRecords<EndOfDayReportRow>().ToList();
+                    _records = csvReader.GetRecords<Transaction>().ToList();
                 }
             }
         }
 
-        public List<EndOfDayReportRow> GetRecords()
+        public List<Transaction> GetRecords()
         {
             return _records;
         }

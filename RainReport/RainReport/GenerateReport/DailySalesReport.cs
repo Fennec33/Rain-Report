@@ -10,8 +10,8 @@ namespace RainReport.GenerateReport
     public class DailySalesReport
     {
         public List<Transaction> transactions = new();
-        public List<EndOfDayReportRow> endOfDayReports = new();
-        public List<TransactionDetailsReportRow> transactionDetails = new();
+        public List<Transaction> endOfDayReports = new();
+        public List<TransactionItem> transactionDetails = new();
 
         public void RunReport(EndOfDayReport eodReport, TransactionDetailsReport transactionsReport)
         {
@@ -26,30 +26,16 @@ namespace RainReport.GenerateReport
             ExportReport();
         }
 
-        private void AddTransactionToReport(EndOfDayReportRow transaction)
+        private void AddTransactionToReport(Transaction transaction)
         {
             Transaction newT = new Transaction();
-            newT.transactionID = transaction.TransactionID;
-            newT.salesClerk = transaction.Employee;
-            newT.subTotal = transaction.SubTotal;
-            newT.discount = transaction.Discount;
-            newT.tradeInCredit = transaction.TradeInCredit;
-            newT.tax = transaction.Tax;
-            newT.shipping = transaction.Shipping;
-            newT.totalSales = transaction.Total;
 
-            List<TransactionDetailsReportRow> itemsToAdd = new();
-            itemsToAdd = FetchAllItemsForTransaction(newT.transactionID);
+            List<TransactionItem> itemsToAdd = new();
+            //itemsToAdd = FetchAllItemsForTransaction(newT.transactionID);
 
             foreach (var item in itemsToAdd)
             {
                 TransactionItem newItem = new();
-
-                newItem.itemName = item.ItemName;
-                newItem.department = item.Department;
-                newItem.qty = item.Qty;
-                newItem.retail = item.Retail;
-                newItem.discount = item.Discount;
 
                 newT.items.Add(newItem);
             }
@@ -57,11 +43,11 @@ namespace RainReport.GenerateReport
             transactions.Add(newT);
         }
 
-        private List<TransactionDetailsReportRow> FetchAllItemsForTransaction(int id)
+        private List<TransactionItem> FetchAllItemsForTransaction(int id)
         {
-            List<TransactionDetailsReportRow> items = new();
+            List<TransactionItem> items = new();
 
-            foreach (TransactionDetailsReportRow item in transactionDetails)
+            foreach (TransactionItem item in transactionDetails)
             {
                 if (item.ID == id)
                 {
