@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RainReport.DataImport;
 
-namespace RainReport.GenerateReport
+namespace RainReport
 {
     public class DailySalesReport
     {

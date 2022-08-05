@@ -7,7 +7,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 
-namespace RainReport.DataImport
+namespace RainReport
 {
     public class TransactionItem
     {

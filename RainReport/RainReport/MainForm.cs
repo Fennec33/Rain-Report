@@ -6,8 +6,6 @@ using CsvHelper.Configuration.Attributes;
 using System.IO;
 using System.Globalization;
 using System.Linq;
-using RainReport.DataImport;
-using RainReport.GenerateReport;
 
 public partial class MainForm : Form
 {

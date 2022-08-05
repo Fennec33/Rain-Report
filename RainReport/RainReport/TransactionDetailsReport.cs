@@ -7,12 +7,12 @@ using CsvHelper;
 using System.IO;
 using System.Globalization;
 
-namespace RainReport.DataImport
+namespace RainReport
 {
-    public class EndOfDayReport
+    public class TransactionDetailsReport
     {
-        private List<Transaction> _records;
-        public IReadOnlyCollection<Transaction> Records => _records.AsReadOnly();
+        private List<TransactionItem> _records;
+        public List<TransactionItem> GetRecords() => _records;
 
         public void ReadFile(string filePath)
         {
@@ -20,14 +20,9 @@ namespace RainReport.DataImport
             {
                 using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
                 {
-                    _records = csvReader.GetRecords<Transaction>().ToList();
+                    _records = csvReader.GetRecords<TransactionItem>().ToList();
                 }
             }
-        }
-
-        public List<Transaction> GetRecords()
-        {
-            return _records;
         }
     }
 }
