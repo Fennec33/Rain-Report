@@ -24,5 +24,10 @@ namespace RainReport.DataImport
                 }
             }
         }
+
+        public List<TransactionDetailsReportRow> GetRecords()
+        {
+            return _records;
+        }
     }
 }

@@ -8,5 +8,16 @@ namespace RainReport.GenerateReport
 {
     public class TransactionItem
     {
+        public string itemName = "";
+        public string department = "";
+        public float qty;
+        public float retail;
+        public float discount;
+        
+        
+        public float totalSales;
+
+        public bool isCommisonable;
+        public bool isMajorItem;
     }
 }

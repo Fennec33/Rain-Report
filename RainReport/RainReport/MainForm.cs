@@ -7,6 +7,7 @@ using System.IO;
 using System.Globalization;
 using System.Linq;
 using RainReport.DataImport;
+using RainReport.GenerateReport;
 
 public partial class MainForm : Form
 {
@@ -88,7 +89,8 @@ public partial class MainForm : Form
     {
         if (_haveEndOfDayReport && _haveTransactionDetailsReport)
         {
-            //Run report
+            DailySalesReport report = new();
+            report.RunReport(_endOfDayReport, _transactionDetailsReport);
         }
     }
 

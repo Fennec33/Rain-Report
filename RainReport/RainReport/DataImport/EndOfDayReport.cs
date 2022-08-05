@@ -24,5 +24,10 @@ namespace RainReport.DataImport
                 }
             }
         }
+
+        public List<EndOfDayReportRow> GetRecords()
+        {
+            return _records;
+        }
     }
 }
