@@ -9,7 +9,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace RainReport.DataImport
 {
-    internal class TransactionDetailsReportRow
+    public class TransactionDetailsReportRow
     {
         [Name("id")]
         public int ID { get; set; }

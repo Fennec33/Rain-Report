@@ -9,7 +9,7 @@ using System.Globalization;
 
 namespace RainReport.DataImport
 {
-    internal class EndOfDayReport
+    public class EndOfDayReport
     {
         private List<EndOfDayReportRow> _records;
         public IReadOnlyCollection<EndOfDayReportRow> Records => _records.AsReadOnly();

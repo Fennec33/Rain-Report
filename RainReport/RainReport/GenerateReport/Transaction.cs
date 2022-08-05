@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RainReport.GenerateReport
 {
-    internal class Transaction
+    public class Transaction
     {
     }
 }
