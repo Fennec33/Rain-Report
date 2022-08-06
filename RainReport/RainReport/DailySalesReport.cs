@@ -9,15 +9,14 @@ namespace RainReport
     public class DailySalesReport
     {
         public List<Transaction> transactions = new();
-        public List<Transaction> endOfDayReports = new();
         public List<TransactionItem> transactionDetails = new();
 
         public void RunReport(EndOfDayReport eodReport, TransactionDetailsReport transactionsReport)
         {
-            endOfDayReports = eodReport.GetRecords();
+            transactions = eodReport.GetRecords();
             transactionDetails = transactionsReport.GetRecords();
 
-            foreach (var transaction in endOfDayReports)
+            foreach (var transaction in transactions)
             {
                 AddTransactionToReport(transaction);
             }
@@ -27,19 +26,9 @@ namespace RainReport
 
         private void AddTransactionToReport(Transaction transaction)
         {
-            Transaction newT = new Transaction();
-
             List<TransactionItem> itemsToAdd = new();
-            //itemsToAdd = FetchAllItemsForTransaction(newT.transactionID);
-
-            foreach (var item in itemsToAdd)
-            {
-                TransactionItem newItem = new();
-
-                newT.items.Add(newItem);
-            }
-
-            transactions.Add(newT);
+            itemsToAdd = FetchAllItemsForTransaction(transaction.TransactionID);
+            transaction.items = itemsToAdd;
         }
 
         private List<TransactionItem> FetchAllItemsForTransaction(int id)
@@ -59,7 +48,8 @@ namespace RainReport
 
         private void ExportReport()
         {
-            //TODO
+            ReportExporter exporter = new();
+            exporter.ExportReport(this);
         }
     }
 }
