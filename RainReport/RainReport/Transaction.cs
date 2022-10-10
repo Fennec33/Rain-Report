@@ -46,12 +46,24 @@ namespace RainReport
         [Name("Total")]
         public float Total { get; set; }
 
-        public bool ifMajorItemTransaction;
-        public bool ifNonCommisionableTransaction;
-
-        public void DoAThing()
+        public bool IsMajorItemTransaction()
         {
-            //TODO
+            foreach (var item in items)
+            {
+                if (Categories.IsThisAMajorItem(item))
+                    return true;
+            }
+            return false;
+        }
+
+        public bool IsCommisionableTransaction()
+        {
+            foreach (var item in items)
+            {
+                if (Categories.IsThisCommisonable(item))
+                    return true;
+            }
+            return false;
         }
     }
 }

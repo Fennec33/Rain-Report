@@ -6,25 +6,23 @@ using System.Threading.Tasks;
 
 namespace RainReport
 {
-    public class DailySalesReport
+    public class SalesData
     {
-        public List<Transaction> transactions = new();
-        public List<TransactionItem> transactionDetails = new();
+        public List<Transaction> transactions;
+        private List<TransactionItem> _items;
 
-        public void RunReport(EndOfDayReport eodReport, TransactionDetailsReport transactionsReport)
+        public void AsembleDataFrom(EndOfDayData eodReport, TransactionDetailsData transactionsReport)
         {
             transactions = eodReport.GetRecords();
-            transactionDetails = transactionsReport.GetRecords();
+            _items = transactionsReport.GetRecords();
 
             foreach (var transaction in transactions)
             {
-                AddTransactionToReport(transaction);
+                AddItemsToTransaction(transaction);
             }
-
-            ExportReport();
         }
 
-        private void AddTransactionToReport(Transaction transaction)
+        private void AddItemsToTransaction(Transaction transaction)
         {
             List<TransactionItem> itemsToAdd = new();
             itemsToAdd = FetchAllItemsForTransaction(transaction.TransactionID);
@@ -35,7 +33,7 @@ namespace RainReport
         {
             List<TransactionItem> items = new();
 
-            foreach (TransactionItem item in transactionDetails)
+            foreach (TransactionItem item in _items)
             {
                 if (item.ID == id)
                 {
@@ -44,12 +42,6 @@ namespace RainReport
             }
 
             return items;
-        }
-
-        private void ExportReport()
-        {
-            ReportExporter exporter = new();
-            exporter.ExportReport(this);
         }
     }
 }

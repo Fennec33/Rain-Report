@@ -9,8 +9,9 @@ using System.Linq;
 
 public partial class MainForm : Form
 {
-    private EndOfDayReport _endOfDayReport = new();
-    private TransactionDetailsReport _transactionDetailsReport = new();
+    private EndOfDayData _endOfDayReport = new();
+    private TransactionDetailsData _transactionDetailsReport = new();
+    private SalesData _salesData = new();
 
     private List<string> _endOfDayReportHeaders = new List<string>();
     private List<string> _transactionDetailsHeaders = new List<string>();
@@ -87,8 +88,9 @@ public partial class MainForm : Form
     {
         if (_haveEndOfDayReport && _haveTransactionDetailsReport)
         {
-            DailySalesReport report = new();
-            report.RunReport(_endOfDayReport, _transactionDetailsReport);
+            _salesData.AsembleDataFrom(_endOfDayReport, _transactionDetailsReport);
+            DailySalesReportBuilder report = new();
+            report.BuildReport(_salesData);
         }
     }
 

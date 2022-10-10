@@ -8,7 +8,7 @@ namespace RainReport
 {
     public class ReportExporter
     {
-        public void ExportReport(DailySalesReport report)
+        public void ExportReport(DailySalesReportBuilder report)
         {
             //make TXT file
         }

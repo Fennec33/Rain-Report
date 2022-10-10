@@ -89,8 +89,24 @@ namespace RainReport
         [Name("Note")]
         public string Note { get; set; }
 
-        public float salesTotal;
-        public bool isCommisonable;
-        public bool isMajorItem;
+        public float GetSalesTotal()
+        {
+            return Retail - Discount;
+        }
+
+        public bool IsCommisonable()
+        {
+            return Categories.IsThisCommisonable(this);
+        }
+
+        public bool IsMajorItem()
+        {
+            return Categories.IsThisAMajorItem(this);
+        }
+
+        public bool IsAcessoryItem()
+        {
+            return Categories.IsThisAnAccessory(this);
+        }
     }
 }

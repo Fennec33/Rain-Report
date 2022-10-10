@@ -9,10 +9,10 @@ using System.Globalization;
 
 namespace RainReport
 {
-    public class TransactionDetailsReport
+    public class EndOfDayData
     {
-        private List<TransactionItem> _records;
-        public List<TransactionItem> GetRecords() => _records;
+        private List<Transaction> _records;
+        public List<Transaction> GetRecords() => _records;
 
         public void ReadFile(string filePath)
         {
@@ -20,7 +20,7 @@ namespace RainReport
             {
                 using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
                 {
-                    _records = csvReader.GetRecords<TransactionItem>().ToList();
+                    _records = csvReader.GetRecords<Transaction>().ToList();
                 }
             }
         }
