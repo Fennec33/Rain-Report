@@ -27,7 +27,7 @@ namespace RainReport
         public string SKU { get; set; }
 
         [Name("Qty")]
-        public int Qty { get; set; }
+        public float Qty { get; set; }
 
         [Name("Retail")]
         public float Retail { get; set; }
@@ -104,7 +104,7 @@ namespace RainReport
             return Categories.IsThisAMajorItem(this);
         }
 
-        public bool IsAcessoryItem()
+        public bool IsAccessoryItem()
         {
             return Categories.IsThisAnAccessory(this);
         }

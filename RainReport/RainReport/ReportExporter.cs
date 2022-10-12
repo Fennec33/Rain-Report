@@ -8,9 +8,27 @@ namespace RainReport
 {
     public class ReportExporter
     {
-        public void ExportReport(DailySalesReportBuilder report)
+        List<string> linesToPrint = new List<string>();
+
+        public async Task ExportReport()
         {
-            //make TXT file
+            await File.WriteAllLinesAsync("RainReportOutput.txt", linesToPrint);
+        }
+
+        public void QueLines(string[] lines)
+        {
+            foreach(string line in lines)
+                linesToPrint.Add(line);
+        }
+
+        public void QueLine(string line)
+        {
+            linesToPrint.Add(line);
+        }
+
+        public void QueBreak()
+        {
+            linesToPrint.Add("");
         }
     }
 }
