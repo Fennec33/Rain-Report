@@ -30,5 +30,16 @@ namespace RainReport
         {
             linesToPrint.Add("");
         }
+
+        public void QueBreak(int num)
+        {
+            for (int i = 0; i < num; i++)
+                linesToPrint.Add("");
+        }
+
+        public void QueHorizon()
+        {
+            linesToPrint.Add("".PadRight(TableFormatter.maxWidth, '-'));
+        }
     }
 }

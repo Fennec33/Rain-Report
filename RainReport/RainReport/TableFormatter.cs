@@ -8,7 +8,7 @@ namespace RainReport
 {
     public class TableFormatter
     {
-        const int maxWidth = 85;
+        public const int maxWidth = 85;
         private int[] _colWidth;
 
         //Total of all colWidth must be under maxWidth;
