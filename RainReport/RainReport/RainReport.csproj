@@ -6,7 +6,12 @@
         <Nullable>enable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>RainReportIcon.ico</ApplicationIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="RainReportIcon.ico" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="CsvHelper" Version="28.0.1" />

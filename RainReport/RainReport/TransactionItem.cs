@@ -27,28 +27,28 @@ namespace RainReport
         public string SKU { get; set; }
 
         [Name("Qty")]
-        public float Qty { get; set; }
+        public int Qty { get; set; }
 
         [Name("Retail")]
-        public float Retail { get; set; }
+        public string Retail { private get; set; }
 
         [Name("Discount")]
-        public float Discount { get; set; }
+        public string Discount { private get; set; }
 
         [Name("Tax Collected")]
-        public float TaxCollected { get; set; }
+        public string TaxCollected { private get; set; }
 
         [Name("Cost")]
-        public float Cost { get; set; }
+        public string Cost { private get; set; }
 
         [Name("Liability")]
-        public float Liability { get; set; }
+        public string Liability { private get; set; }
 
         [Name("Profit")]
-        public float Profit { get; set; }
+        public string Profit { private get; set; }
 
         [Name("Margin")]
-        public float Margin { get; set; }
+        public string Margin { get; set; }
 
         [Name("Customer")]
         public string Customer { get; set; }
@@ -89,9 +89,11 @@ namespace RainReport
         [Name("Note")]
         public string Note { get; set; }
 
-        public float GetSalesTotal()
+        public int tradeInCredit = 0;
+
+        public int GetSalesTotal()
         {
-            return Retail - Discount;
+            return GetRetailInCents() + GetDiscountInCents() - tradeInCredit;
         }
 
         public bool IsCommisonable()
@@ -108,5 +110,13 @@ namespace RainReport
         {
             return Categories.IsThisAnAccessory(this);
         }
+
+        public int GetRetailInCents() => Categories.ToCents(Retail);
+        public int GetDiscountInCents() => Categories.ToCents(Discount);
+        public int GetTaxCollectedInCents() => Categories.ToCents(TaxCollected);
+        public int GetCostInCents() => Categories.ToCents(Cost);
+        public int GetLiabilityInCents() => Categories.ToCents(Liability);
+        public int GetProfitInCents() => Categories.ToCents(Profit);
+
     }
 }

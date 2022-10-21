@@ -16,51 +16,82 @@ namespace RainReport
         {
             _data = data;
 
+            foreach (var transaction in _data.transactions)
+                transaction.DistriputeTradeInCredit();
+
+            _exporter.QueLines(BuildDateSupReport());
+            _exporter.QueBreak();
             _exporter.QueLines(BuildDepartmentTotalsSubReport());
             _exporter.QueBreak();
             _exporter.QueLines(BuildSalesRepTotalsSubReport());
             _exporter.QueBreak();
             _exporter.QueLines(BuildTotalSalesSubReport());
-            _exporter.QueBreak();
+            _exporter.QueHorizon();
             _exporter.QueLines(BuildTransactionsSubReport());
+            _exporter.QueHorizon();
+            _exporter.QueLines(BuildNonCommissionableSubReport());
             _exporter.QueBreak();
-            //_exporter.QueLines(BuildNonCommissionableSunReport());
-            _exporter.QueBreak();
-            //_exporter.QueLines(BuildLayAwaySubReport());
+            _exporter.QueLines(BuildLayAwaySubReport());
 
             _exporter.ExportReport();
         }
 
+        private string[] BuildDateSupReport()
+        {
+            return new string[] { DateTime.Now.ToString("M / d / yyyy") };
+        }
+
         private string[] BuildDepartmentTotalsSubReport()
         {
-            int[] tableWidths = { 50, 30 };
+            int[] tableWidths = { 25, 30 };
             TableFormatter formatter = new TableFormatter(tableWidths);
 
-            IDictionary<string, float> departmentTotals = new Dictionary<string, float>();
+            IDictionary<string, int> departmentTotals = new Dictionary<string, int>();
+            int partialPaymentTotal = 0;
+
+            int returnTotal = 0;
 
             //Go through each transaction item and create a running total of every departments sales numbers
             foreach(Transaction transaction in _data.transactions)
             {
+                int partialPaymentAmount = transaction.PartialPaymentAmount();
+                if (partialPaymentAmount > 0)
+                    partialPaymentTotal += partialPaymentAmount;
+                else
+                    returnTotal += partialPaymentAmount;
+
                 foreach(TransactionItem item in transaction.items)
                 {
                     string key = item.Department;
-                    float value = item.GetSalesTotal();
+                    int value = item.GetSalesTotal();
 
-                    if(departmentTotals.ContainsKey(key))
-                        departmentTotals[key] += value;
+                    if (key == "Service") key = "Repairs"; // count service and repairs together
+
+                    if (value > 0)
+                    {
+                        if (departmentTotals.ContainsKey(key))
+                            departmentTotals[key] += value;
+                        else
+                            departmentTotals.Add(key, value);
+                    }
                     else
-                        departmentTotals.Add(key, value);
+                    {
+                        returnTotal += value;
+                    }
                 }
             }
 
-            string[] result = new string[departmentTotals.Count + 2];
-            result[0] = "Department Totals";
-            result[result.Length-1] = "Lay-Away Payments";
+            departmentTotals.Add("Partial Payments", partialPaymentTotal);
+            departmentTotals.Add("Returns", returnTotal);
 
-            for (int i =1; i < result.Length - 1; i++)
+
+            string[] result = new string[departmentTotals.Count + 1];
+            result[0] = "Department Totals";
+
+            for (int i =1; i < result.Length; i++)
             {
-                KeyValuePair<string, float> pair = departmentTotals.ElementAt(i-1);
-                string[] line = { pair.Key, pair.Value.ToString() };
+                KeyValuePair<string, int> pair = departmentTotals.ElementAt(i-1);
+                string[] line = { pair.Key, Categories.ToDollars(pair.Value) };
                 result[i] = formatter.Format(line);
             }
 
@@ -69,15 +100,15 @@ namespace RainReport
 
         private string[] BuildSalesRepTotalsSubReport()
         {
-            int[] tableWidths = { 30, 10, 10, 10, 10, 10 };
+            int[] tableWidths = { 25, 12, 12, 12, 10, 10 };
             TableFormatter formatter = new TableFormatter(tableWidths);
 
             List<string> salesReps = new List<string>();
-            List<float> majorSales = new List<float>();
-            List<float> majorItems = new List<float>();
-            List<float> majorItemsTransactions = new List<float>();
-            List<float> accessorySales = new List<float>();
-            List<float> accessoryTransactions = new List<float>();
+            List<int> majorSales = new List<int>();
+            List<int> majorItems = new List<int>();
+            List<int> majorItemsTransactions = new List<int>();
+            List<int> accessorySales = new List<int>();
+            List<int> accessoryTransactions = new List<int>();
             bool isMajorItemTransaction = false;
             string salesRep;
             int index;
@@ -126,14 +157,14 @@ namespace RainReport
             }
 
             string[] result = new string[salesReps.Count + 1];
-            string[] headers = { "Sales Rep", "Major Sales", "Major Items", "Major Item Transactions",
+            string[] headers = { "Sales Rep", "Major Sales", "Major Items", "Major Trans",
                 "Acc Sales", "Acc Trans" };
             result[0] = formatter.Format(headers);
 
             for (int i = 0; i < result.Length - 1; i++)
             {
-                string[] str = { salesReps[i], majorSales[i].ToString(), majorItems[i].ToString(),
-                    majorItemsTransactions[i].ToString(), accessorySales[i].ToString(), accessoryTransactions[i].ToString() };
+                string[] str = { salesReps[i], Categories.ToDollars(majorSales[i]), majorItems[i].ToString(),
+                    majorItemsTransactions[i].ToString(), Categories.ToDollars(accessorySales[i]), accessoryTransactions[i].ToString() };
                 result[i + 1] = formatter.Format(str);
             }
 
@@ -150,8 +181,8 @@ namespace RainReport
             string[] cTotal = { "Commissionable Total: ", "" };
             string[] nCTotal = { "Non-Commissionable Total: ", "" };
 
-            float commissionSales = 0;
-            float nonCommissionSales = 0;
+            int commissionSales = 0;
+            int nonCommissionSales = 0;
 
             foreach (Transaction transaction in _data.transactions)
             {
@@ -164,9 +195,9 @@ namespace RainReport
                 }
             }
 
-            total[1] = (commissionSales + nonCommissionSales).ToString();
-            cTotal[1] = commissionSales.ToString();
-            nCTotal[1] = nonCommissionSales.ToString();
+            total[1] = Categories.ToDollars(commissionSales + nonCommissionSales);
+            cTotal[1] = Categories.ToDollars(commissionSales);
+            nCTotal[1] = Categories.ToDollars(nonCommissionSales);
 
             result[0] = formatter.Format(total);
             result[1] = formatter.Format(cTotal);
@@ -177,7 +208,7 @@ namespace RainReport
 
         private string[] BuildTransactionsSubReport()
         {
-            int[] tableWidths = { 20, 30, 10, 10, 10 };
+            int[] tableWidths = { 25, 32, 5, 13, 10 };
             TableFormatter formatter = new TableFormatter(tableWidths);
             
             List<string> salesClerk = new List<string>();
@@ -196,10 +227,12 @@ namespace RainReport
             {
                 foreach (TransactionItem item in transaction.items)
                 {
+                    if (!item.IsCommisonable()) continue;
+
                     salesClerk.Add(item.SalesPerson);
                     itemName.Add(item.ItemName);
                     qty.Add(item.Qty.ToString());
-                    salesTotal.Add(item.GetSalesTotal().ToString());
+                    salesTotal.Add(Categories.ToDollars(item.GetSalesTotal()));
                     ID.Add(item.ID.ToString());
                 }
             }
@@ -225,20 +258,77 @@ namespace RainReport
             return result;
         }
 
-        private string[] BuildNonCommissionableSunReport()
+        private string[] BuildNonCommissionableSubReport()
         {
-            int[] tableWidths = { 85 };
+            _exporter.QueLine("Non-Commissionable Items");
+
+            int[] tableWidths = { 25, 32, 5, 13, 10 };
             TableFormatter formatter = new TableFormatter(tableWidths);
 
-            return new string[] { "" };
+            List<string> salesClerk = new List<string>();
+            List<string> itemName = new List<string>();
+            List<string> qty = new List<string>();
+            List<string> salesTotal = new List<string>();
+            List<string> ID = new List<string>();
+
+            salesClerk.Add("Sales Clerk");
+            itemName.Add("Item Name");
+            qty.Add("Qty");
+            salesTotal.Add("Sales Total");
+            ID.Add("ID");
+
+            foreach (Transaction transaction in _data.transactions)
+            {
+                foreach (TransactionItem item in transaction.items)
+                {
+                    if (item.IsCommisonable()) continue;
+
+                    salesClerk.Add(item.SalesPerson);
+                    itemName.Add(item.ItemName);
+                    qty.Add(item.Qty.ToString());
+                    salesTotal.Add(Categories.ToDollars(item.GetSalesTotal()));
+                    ID.Add(item.ID.ToString());
+                }
+            }
+
+            string[] result = new string[salesClerk.Count];
+
+            for (int i = 0; i < salesClerk.Count; i++)
+            {
+                string[] str = { salesClerk[i], itemName[i], qty[i], salesTotal[i], ID[i] };
+
+                if (i > 0)
+                {
+                    if (ID[i] == ID[i - 1])
+                    {
+                        str[0] = "";
+                        str[4] = "";
+                    }
+                }
+
+                result[i] = formatter.Format(str);
+            }
+
+            return result;
         }
 
         private string[] BuildLayAwaySubReport()
         {
             int[] tableWidths = { 85 };
             TableFormatter formatter = new TableFormatter(tableWidths);
+            List<string> result = new List<string>();
 
-            return new string[] { "" };
+            result.Add("Partial Payment Transactions");
+
+            foreach (Transaction transaction in _data.transactions)
+            {
+                if (transaction.ContainsPartialPayments())
+                {
+                    result.Add(transaction.TransactionID.ToString());
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }

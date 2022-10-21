@@ -12,7 +12,13 @@ namespace RainReport
 
         public async Task ExportReport()
         {
-            await File.WriteAllLinesAsync("RainReportOutput.txt", linesToPrint);
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string date = DateTime.Now.ToString("M-d-yyyy");
+            string fileName = path + "\\" + date + " Daily Sales Rep Report.txt";
+
+            await File.WriteAllLinesAsync(fileName, linesToPrint);
+            System.Diagnostics.Process.Start("notepad.exe", fileName);
+            Application.Exit();
         }
 
         public void QueLines(string[] lines)

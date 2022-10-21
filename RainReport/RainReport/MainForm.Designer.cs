@@ -29,10 +29,9 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.btn_RunReport = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listBox1
@@ -48,7 +47,7 @@ partial class MainForm
             // 
             // btn_RunReport
             // 
-            this.btn_RunReport.Location = new System.Drawing.Point(200, 297);
+            this.btn_RunReport.Location = new System.Drawing.Point(111, 299);
             this.btn_RunReport.Name = "btn_RunReport";
             this.btn_RunReport.Size = new System.Drawing.Size(116, 42);
             this.btn_RunReport.TabIndex = 1;
@@ -56,39 +55,17 @@ partial class MainForm
             this.btn_RunReport.UseVisualStyleBackColor = true;
             this.btn_RunReport.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 297);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "End Of Day Report";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(40, 324);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(105, 15);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Transaction Details";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(350, 364);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_RunReport);
             this.Controls.Add(this.listBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Rain Report";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
     }
 
@@ -96,6 +73,4 @@ partial class MainForm
 
     private ListBox listBox1;
     private Button btn_RunReport;
-    private Label label1;
-    private Label label2;
 }

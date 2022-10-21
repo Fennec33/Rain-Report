@@ -19,7 +19,8 @@ namespace RainReport
             "Live Sound & Recording",
             "Orchestra Instruments",
             "Print Music",
-            "Repairs"
+            "Repairs",
+            "Service"
         };
         private static string[] _majorItemDepartments = new string[] {
             "Acoustic Guitars",
@@ -34,7 +35,8 @@ namespace RainReport
         private static string[] _accessoryItemDepartments = new string[] {
             "Accessories",
             "Print Music",
-            "Repairs"
+            "Repairs",
+            "Service"
         };
 
         public static bool IsThisCommisonable(TransactionItem item)
@@ -77,6 +79,48 @@ namespace RainReport
                     return true;
             }
             return false;
+        }
+
+        public static string ToDollars(int cents)
+        {
+            string result = $"{cents}";
+
+            if (result.Length == 2)
+                return $"0.{cents}";
+            if (result.Length == 1)
+                return $"0.0{cents}";
+
+            result = result.Insert(result.Length - 2, ".");
+            return result;
+        }
+
+        public static int ToCents(string dollars)
+        {
+            string d = "0";
+            string c = "00";
+            int negitive = 1;
+
+            if (dollars[0] == '-')
+            {
+                negitive = -1;
+                dollars = dollars.Remove(0, 1);
+            }
+
+            int decimalIndex = dollars.IndexOf('.');
+
+            if (decimalIndex != -1)
+            {
+                dollars += "0";
+                d = dollars.Substring(0, decimalIndex);
+                c = dollars.Substring(decimalIndex + 1, 2);
+            }
+            else
+            {
+                d = dollars;
+                c = "00";
+            }
+
+            return int.Parse(d + c) * negitive;
         }
     }
 }

@@ -29,22 +29,22 @@ namespace RainReport
         public string PaymentType { get; set; }
 
         [Name("Sub Total")]
-        public float SubTotal { get; set; }
+        public string SubTotal { private get; set; }
 
         [Name("Discount")]
-        public float Discount { get; set; }
+        public string Discount { private get; set; }
 
         [Name("Trade-In Credit")]
-        public float TradeInCredit { get; set; }
+        public string TradeInCredit { private get; set; }
 
         [Name("Tax")]
-        public float Tax { get; set; }
+        public string Tax { private get; set; }
 
         [Name("Shipping")]
-        public float Shipping { get; set; }
+        public string Shipping { private get; set; }
 
         [Name("Total")]
-        public float Total { get; set; }
+        public string Total { private get; set; }
 
         public bool IsMajorItemTransaction()
         {
@@ -65,5 +65,84 @@ namespace RainReport
             }
             return false;
         }
+
+        public bool ContainsPartialPayments()
+        {
+            if (PartialPaymentAmount() != 0)
+                return true;
+            else
+                return false;
+        }
+
+        public int PartialPaymentAmount()
+        {
+            int itemSales = 0;
+
+            foreach (var item in items)
+                itemSales += item.GetSalesTotal();
+
+            return GetSalesTotal() - itemSales;
+        }
+
+        public int GetSalesTotal()
+        {
+            return GetSubTotalInCents() + GetDiscountInCents() + GetTradeInCreditInCents();
+        }
+
+        public void DistriputeTradeInCredit()
+        {
+            int creditToDistripute = Math.Abs(GetTradeInCreditInCents());
+
+            //reset credits before reassign
+            foreach (var item in items)
+                item.tradeInCredit = 0;
+
+            //assign to major items
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].IsAccessoryItem())
+                    continue;
+
+                int tempSalesTotal = items[i].GetSalesTotal();
+
+                if (tempSalesTotal >= creditToDistripute)
+                {
+                    items[i].tradeInCredit = creditToDistripute;
+                    return;
+                }
+                else
+                {
+                    items[i].tradeInCredit = tempSalesTotal;
+                    creditToDistripute -= tempSalesTotal;
+                }
+            }
+
+            //assign to accessoroy items
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].IsMajorItem())
+                    continue;
+
+                int tempSalesTotal = items[i].GetSalesTotal();
+
+                if (tempSalesTotal >= creditToDistripute)
+                {
+                    items[i].tradeInCredit = creditToDistripute;
+                    return;
+                }
+                else
+                {
+                    items[i].tradeInCredit = tempSalesTotal;
+                    creditToDistripute -= tempSalesTotal;
+                }
+            }
+        }
+
+        public int GetSubTotalInCents() => Categories.ToCents(SubTotal);
+        public int GetDiscountInCents() => Categories.ToCents(Discount);
+        public int GetTradeInCreditInCents() => Categories.ToCents(TradeInCredit);
+        public int GetTaxInCents() => Categories.ToCents(Tax);
+        public int GetShippingInCents() => Categories.ToCents(Shipping);
+        public int GetTotalInCents() => Categories.ToCents(Total);
     }
 }
