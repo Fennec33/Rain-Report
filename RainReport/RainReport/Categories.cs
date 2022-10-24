@@ -86,11 +86,19 @@ namespace RainReport
             string result = $"{cents}";
 
             if (result.Length == 2)
-                return $"0.{cents}";
+                result = "0" + result;
             if (result.Length == 1)
-                return $"0.0{cents}";
+                result = "00" + result;
 
             result = result.Insert(result.Length - 2, ".");
+            result = result.Insert(0, "$");
+
+            if (result[1] == '-')
+            {
+                result = result.Replace('-', '(');
+                result = result.Insert(result.Length, ")");
+            }
+
             return result;
         }
 

@@ -8,13 +8,24 @@ namespace RainReport
 {
     public class TableFormatter
     {
-        public const int maxWidth = 85;
+        public const int maxWidth = 84;
         private int[] _colWidth;
+        private bool[] _rightAlign;
 
         //Total of all colWidth must be under maxWidth;
         public TableFormatter(int[] colWidth)
         {
             _colWidth = colWidth;
+            _rightAlign = new bool[colWidth.Length];
+            
+            for (int i = 0; i < _rightAlign.Length; i++)
+                _rightAlign[i] = false;
+        }
+
+        public void RightAlignCol(int col)
+        {
+            if (_rightAlign != null && _rightAlign.Length > col)
+                _rightAlign[col] = true;
         }
 
         public string Format(string[] row)
@@ -29,7 +40,11 @@ namespace RainReport
 
                 dif = _colWidth[i] - row[i].Length;
 
-                if (dif > 0)
+                if (dif > 0 && _rightAlign[i])
+                {
+                    row[i] = row[i].PadLeft(_colWidth[i]);
+                }
+                else if (dif > 0)
                 {
                     row[i] = row[i].PadRight(_colWidth[i]);
                 }

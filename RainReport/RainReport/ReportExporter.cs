@@ -12,7 +12,9 @@ namespace RainReport
 
         public async Task ExportReport()
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);//store on desktop
+            string path = Directory.GetCurrentDirectory();//store in parent directory
+            path = Directory.GetParent(path).FullName;
             string date = DateTime.Now.ToString("M-d-yyyy");
             string fileName = path + "\\" + date + " Daily Sales Rep Report.txt";
 
@@ -46,6 +48,13 @@ namespace RainReport
         public void QueHorizon()
         {
             linesToPrint.Add("".PadRight(TableFormatter.maxWidth, '-'));
+        }
+
+        public void QueHorizonThick()
+        {
+            linesToPrint.Add("");
+            linesToPrint.Add("".PadRight(TableFormatter.maxWidth, '#'));
+            linesToPrint.Add("");
         }
     }
 }
